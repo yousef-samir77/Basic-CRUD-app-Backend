@@ -1,22 +1,23 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Product = require("./models/product.model.js");
-const productRoute = require("./routes/product.route.js")
+const productRoute = require("./routes/product.route.js");
+const dotenv = require("dotenv");
 const app = express();
+dotenv.config()
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 // routes
-app.use("/api/products", productRoute)
-//
+app.use("/api/products", productRoute);
+// mongo password
+const databasePassword = process.env.MONGO_PASSWORD;
 app.get("/", (req, res) => {
   res.send("hello world");
 });
 
-
 mongoose
   .connect(
-    "mongodb+srv://admin:mongodb@crud-database.p2oubov.mongodb.net/Node-API?retryWrites=true&w=majority"
+    `mongodb+srv://admin:${databasePassword}@crud-database.p2oubov.mongodb.net/Node-API?retryWrites=true&w=majority`
   )
   .then(() => {
     console.log("connected");
